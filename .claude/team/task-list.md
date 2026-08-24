@@ -52,7 +52,7 @@ U1–U5 are separate route files with no overlap, so their internal order is fle
 
 | ID | Task | Owner | Depends on | Status |
 |----|------|-------|------------|--------|
-| Q1 | Full MVP flow review: create → list → detail → status/priority change → add comment → dashboard stats update; TypeScript correctness; Prisma/SQLite consistency; UI/backend contract match | qa | F1, F2, F3, B1, B2, B3, U1, U2, U3, U4, U5 | Not Started |
+| Q1 | Full MVP flow review: create → list → detail → status/priority change → add comment → dashboard stats update; TypeScript correctness; Prisma/SQLite consistency; UI/backend contract match | qa | F1, F2, F3, B1, B2, B3, U1, U2, U3, U4, U5 | Done (PASS — full re-run after accidental reset/restore, no blocker/major/minor findings) |
 
 Q1 starts only after every other task is `Done` (final integration complete). No coverage/load/security certification in scope — MVP flow correctness only.
 

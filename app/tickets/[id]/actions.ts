@@ -10,6 +10,7 @@ export type UpdateFieldState = {
   error: string | null;
   status: Status;
   priority: Priority;
+  attempt: number;
 };
 
 async function performUpdate(
@@ -22,10 +23,10 @@ async function performUpdate(
     revalidatePath(`/tickets/${ticketId}`);
     revalidatePath("/tickets");
     revalidatePath("/");
-    return { error: null, status: ticket.status, priority: ticket.priority };
+    return { error: null, status: ticket.status, priority: ticket.priority, attempt: prevState.attempt + 1 };
   } catch (error) {
     if (error instanceof ValidationError || error instanceof NotFoundError) {
-      return { ...prevState, error: error.message };
+      return { ...prevState, error: error.message, attempt: prevState.attempt + 1 };
     }
     throw error;
   }

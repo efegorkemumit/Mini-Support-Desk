@@ -13,8 +13,8 @@ type TicketControlsProps = {
 };
 
 export default function TicketControls({ ticketId, status, priority }: TicketControlsProps) {
-  const statusInitial: UpdateFieldState = { error: null, status, priority };
-  const priorityInitial: UpdateFieldState = { error: null, status, priority };
+  const statusInitial: UpdateFieldState = { error: null, status, priority, attempt: 0 };
+  const priorityInitial: UpdateFieldState = { error: null, status, priority, attempt: 0 };
 
   const [statusState, statusFormAction, statusPending] = useActionState(updateStatusAction, statusInitial);
   const [priorityState, priorityFormAction, priorityPending] = useActionState(
@@ -35,9 +35,10 @@ export default function TicketControls({ ticketId, status, priority }: TicketCon
             Change status
           </label>
           <select
+            key={`${statusState.status}-${statusState.attempt}`}
             id="status"
             name="status"
-            defaultValue={status}
+            defaultValue={statusState.status}
             disabled={statusPending}
             onChange={() => statusFormRef.current?.requestSubmit()}
             className="rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-900 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-900/10 focus:outline-none disabled:opacity-60"
@@ -62,9 +63,10 @@ export default function TicketControls({ ticketId, status, priority }: TicketCon
             Change priority
           </label>
           <select
+            key={`${priorityState.priority}-${priorityState.attempt}`}
             id="priority"
             name="priority"
-            defaultValue={priority}
+            defaultValue={priorityState.priority}
             disabled={priorityPending}
             onChange={() => priorityFormRef.current?.requestSubmit()}
             className="rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-900 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-900/10 focus:outline-none disabled:opacity-60"

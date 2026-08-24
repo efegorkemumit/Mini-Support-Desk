@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createTicket } from "@/lib/tickets";
 import { ValidationError } from "@/lib/errors";
-import { PRIORITIES, type Priority } from "@/lib/types";
+import { PRIORITIES, isPriority } from "@/lib/types";
 
 export type NewTicketFormState = {
   error: string | null;
@@ -20,10 +20,6 @@ export type NewTicketFormState = {
   };
 };
 
-function isPriorityValue(value: string): value is Priority {
-  return (PRIORITIES as readonly string[]).includes(value);
-}
-
 export async function createTicketAction(
   _prevState: NewTicketFormState,
   formData: FormData,
@@ -36,7 +32,7 @@ export async function createTicketAction(
   const fieldErrors: NewTicketFormState["fieldErrors"] = {};
   if (!title.trim()) fieldErrors.title = "Title is required.";
   if (!description.trim()) fieldErrors.description = "Description is required.";
-  if (!isPriorityValue(priority)) {
+  if (!isPriority(priority)) {
     fieldErrors.priority = `Priority must be one of: ${PRIORITIES.join(", ")}.`;
   }
 
