@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// SQLite has no native enum type, so `priority` and `status` are stored as
+// plain strings holding the exact MVP product values ("Low"/"Medium"/"High"
+// and "Open"/"In Progress"/"Closed"). The type-safe union types and runtime
+// validation live in lib/types.ts and lib/tickets.ts — keep both in sync
+// with this schema.
+model Ticket {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  priority    String    @default("Medium")
+  status      String    @default("Open")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+}
